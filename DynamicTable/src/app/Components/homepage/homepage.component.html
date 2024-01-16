@@ -1,0 +1,33 @@
+<h1>Homepage</h1>
+
+<button [routerLink]="['/employee-page']">Employee Page</button>
+<button [routerLink]="['/organization-details']">Organization Details</button>
+
+
+
+<button (click)="onFilterToggle()"> <mat-icon>filter_alt</mat-icon></button>
+
+<div class="filter-panel"  #contentToToggle>
+    <input>
+    <mat-selection-list multiple>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    <mat-list-option>Dummy</mat-list-option>
+    </mat-selection-list>
+    <div>
+        <button mat-raised-button color="primary">filter</button>
+        <button mat-raised-button color="warn">clear</button>
+    </div>
+</div>
+  
+  
+  
