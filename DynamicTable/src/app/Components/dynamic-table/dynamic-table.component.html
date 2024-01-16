@@ -1,0 +1,49 @@
+<main *ngIf="showPage">
+    <table mat-table [dataSource]="dataSource" matSort #empTbSort="matSort">
+        <caption>
+            Dynamic Table
+        </caption>
+        <ng-container *ngFor="let column of columns; let i = index" [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <ng-container *ngIf="column === 'select'">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selectionModel.hasValue() && isAllSelected()"
+                    [indeterminate]="selectionModel.hasValue() && !isAllSelected()"
+                    ></mat-checkbox>
+                </ng-container>
+                <ng-container *ngIf="column !== 'select'">
+                    {{column}}
+                </ng-container>
+                <div class="filter-box" *ngIf="column !== 'select'">
+                    <button (click)="toggleSelect(i)"><mat-icon>filter_alt</mat-icon></button>
+                    <mat-select  multiple ngDefaultControl [formControl]="getControl(column)">
+                        <input matInput placeholder="Search" [(ngModel)]="searchText">
+                        <mat-option *ngFor="let item of getDistinctColumnValues(column) |
+                         searchValue : searchText" (click)="selection(item,column)" [value]="item">{{ item
+                            }}</mat-option>
+                            <button (click)="clearFilter(column)">Clear</button>
+                            <button (click)="applyFilter(column)">Filter</button>
+                    </mat-select>
+                   
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <ng-container *ngIf="column === 'select'">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selectionModel.toggle(row) : null"
+                    (click)="sendRowSelection.emit(this.selectionModel.selected)"
+                    [checked]="selectionModel.isSelected(row)"
+                    ></mat-checkbox>
+                </ng-container>
+                <ng-container *ngIf="column !== 'select'">
+                    {{row[column]}}
+                </ng-container>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns:columns"></tr>
+    </table>
+
+
+</main>
+<mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
