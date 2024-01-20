@@ -1,0 +1,51 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+  }
+  
+  .example-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .mat-table {
+    overflow: auto;
+    max-height: 500px;
+  }
+  .mat-mdc-select{
+    width: 150px !important;
+  }
+  
+.mat-mdc-select-arrow svg{
+background-image: url("/src/assets/filter-icon-32.png") !important;
+
+}
+
+.mat-select-arrow {
+  opacity: 0;
+}
+
+.custom-select-panel {
+  width: 300px; /* Adjust the width as needed */
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.filter-panel{
+  width: 70%;
+}
+
+mat-selection-list{
+  overflow-y: scroll;
+  max-height: 185px;
+}

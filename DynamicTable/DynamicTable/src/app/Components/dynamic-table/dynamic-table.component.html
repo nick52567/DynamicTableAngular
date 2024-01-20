@@ -1,0 +1,55 @@
+<main *ngIf="showPage">
+    <table mat-table [dataSource]="dataSource" matSort #empTbSort="matSort">
+        <caption>
+            Dynamic Table
+        </caption>
+        <ng-container *ngFor="let column of columns; let i = index" [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <ng-container *ngIf="column === 'select'">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selectionModel.hasValue() && isAllSelected()"
+                        [indeterminate]="selectionModel.hasValue() && !isAllSelected()"></mat-checkbox>
+                </ng-container>
+                <ng-container *ngIf="column !== 'select'">
+                    {{column}}
+                </ng-container>
+                <button *ngIf="column !== 'select'" (click)="[handleClick($event),onFilterToggle(i)]">
+                    <mat-icon [fontIcon]="isFilterActive(column)">
+                    </mat-icon></button>
+                <div (click)="handleClick($event)" class="filter-panel" *ngIf="column !== 'select'" #contentToToggle>
+                    <input [(ngModel)]="searchText">
+                    <mat-selection-list multiple>
+                        <mat-list-option
+                            *ngFor="let item of getDistinctColumnValues(column) | searchValue : searchText : dateFormat"
+                            (click)="selection(item,column)" [selected]="isSelectedFilterValue(column,item)"
+                            [value]="item">
+                            <span *ngIf="valueIsInstanceOfDate(item)"> {{ item | date:dateFormat}} </span>
+                            <span *ngIf="!valueIsInstanceOfDate(item)"> {{ item }} </span>
+                        </mat-list-option>
+                    </mat-selection-list>
+                    <div>
+                        <button mat-raised-button color="primary" (click)="applyFilter(column)">filter</button>
+                        <button mat-raised-button color="warn" (click)="clearFilter(column)">clear</button>
+                    </div>
+                </div>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <ng-container *ngIf="column === 'select'">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selectionModel.toggle(row) : null"
+                        (click)="sendRowSelection.emit(this.selectionModel.selected)"
+                        [checked]="selectionModel.isSelected(row)"></mat-checkbox>
+                </ng-container>
+                <ng-container *ngIf="column !== 'select'">
+                    <span *ngIf="valueIsInstanceOfDate(row[column])"> {{ row[column] | date:dateFormat}} </span>
+                    <span *ngIf="!valueIsInstanceOfDate(row[column])"> {{ row[column] }} </span>
+                </ng-container>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns:columns"></tr>
+    </table>
+
+
+</main>
+<mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
